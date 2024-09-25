@@ -7,11 +7,16 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 robot_distance = 225.99
-robot_close_distance = 70
+robot_close_distance = 20
 interation_status = False
 
 # Lock for thread synchronization
 distance_lock = threading.Lock()
+servo_arduino_port = 4
+dist_arduino_port = 9
+
+servo_ser = serial.Serial(f'COM{servo_arduino_port}', 9600, timeout=1)
+print(f"Connected to {servo_ser.port}")
 
 
 def calculate_emotion():
@@ -27,14 +32,8 @@ def serial_updater():
     global robot_distance
     ser = None
 
-    # Try connecting to available COM ports
-    for i in range(9):  # Search from COM0 to COM8
-        try:
-            ser = serial.Serial(f'COM{i}', 9600, timeout=1)
-            print(f"Connected to {ser.port}")
-            break  # Exit loop if connection is successful
-        except serial.SerialException:
-            continue
+    ser = serial.Serial(f'COM{dist_arduino_port}', 9600, timeout=1)
+    print(f"Connected to {ser.port}")
 
     if ser is None:
         raise Exception("Serial Port not found")
@@ -44,7 +43,10 @@ def serial_updater():
     try:
         while True:
             if ser.in_waiting > 0:
-                line = ser.readline().decode('utf-8').rstrip()
+                try:
+                    line = ser.readline().decode('utf-8').rstrip()
+                except:
+                    continue
                 print(f"Received: {line}")
                 if line.startswith("--distance:"):
                     try:
@@ -52,15 +54,7 @@ def serial_updater():
 
                         with distance_lock:  # Use lock when updating shared variable
                             robot_distance = distance
-
                         emotion = calculate_emotion()
-
-                        # Send command based on emotion
-                        if emotion == "sayHI":
-                            ser.write("sayHI\n".encode())
-                        elif emotion == "lookDown":
-                            ser.write("LookDown\n".encode())
-
                         print(f"Updated serial_out: {robot_distance} - {emotion}")
 
                     except ValueError:
@@ -86,6 +80,11 @@ serial_thread = threading.Thread(target=serial_updater)
 serial_thread.daemon = True
 serial_thread.start()
 
+
+def send_servo_command(command):
+    servo_ser.write(command.encode())
+
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -104,7 +103,18 @@ async def root():
 @app.get("/head_status")
 async def head_screen():
     emotion = calculate_emotion()
+    # send_servo_command(f"{emotion}\n")
+    print("head: ", emotion)
     return {'distance': robot_distance, 'emotion': emotion}
+
+
+@app.get("/head_update")
+async def head_update(status: str):
+    if status == 'lookDown':
+        send_servo_command("lookDown\n")
+    elif status == 'sayHI':
+        send_servo_command("sayHI\n")
+    return {'status': 'updated'}
 
 
 @app.get("/body_update")
@@ -114,6 +124,6 @@ async def body_update(interacting: bool):
     return {'status': 'updated'}
 
 
-uvicorn.run(app, host="localhost", port=8000)
+uvicorn.run(app, host="192.168.14.14", port=8000)
 
 # ngrok http --domain=kangaroo-tops-coral.ngrok-free.app 8000
