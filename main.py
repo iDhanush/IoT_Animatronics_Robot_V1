@@ -7,13 +7,13 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 robot_distance = 225.99
-robot_close_distance = 20
+robot_close_distance = 90
 interation_status = False
 
 # Lock for thread synchronization
 distance_lock = threading.Lock()
 servo_arduino_port = 4
-dist_arduino_port = 9
+dist_arduino_port = 13
 
 servo_ser = serial.Serial(f'COM{servo_arduino_port}', 9600, timeout=1)
 print(f"Connected to {servo_ser.port}")
@@ -55,7 +55,7 @@ def serial_updater():
                         with distance_lock:  # Use lock when updating shared variable
                             robot_distance = distance
                         emotion = calculate_emotion()
-                        print(f"Updated serial_out: {robot_distance} - {emotion}")
+                        # print(f"Updated serial_out: {robot_distance} - {emotion}")
 
                     except ValueError:
                         print("Error parsing distance from serial data.")
@@ -124,6 +124,6 @@ async def body_update(interacting: bool):
     return {'status': 'updated'}
 
 
-uvicorn.run(app, host="192.168.14.14", port=8000)
+uvicorn.run(app, host="192.168.113.14", port=8000)
 
 # ngrok http --domain=kangaroo-tops-coral.ngrok-free.app 8000
