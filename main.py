@@ -5,9 +5,6 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-
-
-
 robot_distance = 225.99
 robot_close_distance = 90
 interation_status = False
