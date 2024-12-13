@@ -2,6 +2,8 @@ import serial
 import time
 import threading
 import uvicorn
+
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
