@@ -1,6 +1,6 @@
-# Iot Animatronic Greeting Robot
+# IoT Animatronic Greeting Robot
 
-This project is an Iot enabled Animatronic Greeting Robot sponsored by the IEDC of St. Joseph's College, Devagiri. The robot is designed to interact dynamically with users, creating an engaging experience by greeting, animating expressions, and allowing interaction through its body screen.
+This project is an IoT-enabled Animatronic Greeting Robot sponsored by the IEDC of St. Joseph's College, Devagiri. The robot is designed to interact dynamically with users, creating an engaging experience by greeting, animating expressions, and allowing interaction through its body screen.
 
 ---
 
@@ -39,52 +39,17 @@ A laptop acts as the server, facilitating communication between components:
 
 ---
 
-## Software Components
-
-### Programming Languages
-- **Arduino IDE**: For programming the Arduino boards.
-- **Python**: For server-side communication and control logic.
-
-### Dependencies
-- Libraries for ultrasonic sensor communication.
-- Libraries for controlling animations and handling interactions on the tablet and screen.
-- Communication protocols for Arduino and server synchronization (e.g., Serial or MQTT).
+### Videos
+- **Robot in Action**:
+  ![Robot in Action](videos/robot_in_action.mp4)
 
 ---
 
-## Setup Instructions
-
-### Hardware Setup
-1. Assemble the robot with the following components:
-   - Mount the tablet as the face.
-   - Connect the ultrasonic proximity sensor to Arduino 1.
-   - Connect the motors for hands and ears to Arduino 2.
-   - Attach the interactive screen to the body.
-2. Ensure all components are powered and connected to the central server (laptop).
-
-### Software Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/robot-greeter.git
-   cd robot-greeter
-   ```
-2. Upload the respective Arduino sketches to Arduino 1 and Arduino 2 using the Arduino IDE.
-3. Install Python dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Run the server script:
-   ```bash
-   python server.py
-   ```
-
----
-
-## Usage
-1. Power on the robot and start the server.
-2. Approach the robot to trigger the proximity sensor.
-3. Interact with the robot through its screen and observe its dynamic responses.
-4. Enjoy the engaging experience of a responsive and animated robotic greeter!
+## Showcase
+This project demonstrates the integration of IoT with animatronics to create a functional and interactive robotic greeter. It showcases:
+- The use of proximity sensors for detecting user presence.
+- The synchronization of visual animations with physical movements.
+- A seamless interaction between hardware and software components.
 
 ---
 
@@ -92,11 +57,6 @@ A laptop acts as the server, facilitating communication between components:
 - Add more expressive animations and voice options.
 - Enable multi-language support for greetings and interactions.
 - Integrate advanced AI for personalized user interactions.
-
----
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
