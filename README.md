@@ -40,6 +40,9 @@ A laptop acts as the server, facilitating communication between components:
 ---
 
 ### Videos
+Phase 1:
+- **Planning 📝**:
+  ![asd](https://github.com/iDhanush/IoT_Animatronics_Robot_V1/raw/refs/heads/master/assets/WhatsApp%20Video%202024-12-26%20at%2010.52.33%20PM.mp4)
 - **Robot in Action**:
   ![Robot in Action](videos/robot_in_action.mp4)
 
